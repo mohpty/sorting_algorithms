@@ -5,6 +5,8 @@
  * swap_nodes - Swap two nodes.
  * @node: node to swap.
  * @list: pointer to head of the list
+ *
+ * Return: node
  */
 listint_t *swap_nodes(listint_t *node, listint_t **list)
 {

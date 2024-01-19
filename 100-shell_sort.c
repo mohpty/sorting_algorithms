@@ -15,21 +15,20 @@ void shell_sort(int *array, size_t size)
 	if (!array || !size)
 		return;
 	for (gap = 1; gap < size / 3; gap = gap * 3 + 1)
-		;
-
-	while (gap > 0)
 	{
+		if (gap == 0)
+		{
+			gap = 1;
+		}
 		for (i = gap; i < size; i++)
 		{
 			tmp = array[i];
-			for (j = i; j > gap - 1 && array[j - gap] > tmp; j -= gap)
+			for (j = i; j >= gap && array[j - gap] > tmp; j -= gap)
 			{
 				array[j] = array[j - gap];
 			}
 			array[j] = tmp;
 		}
 		print_array(array, size);
-
-		gap = (gap - 1) / 3;
 	}
 }

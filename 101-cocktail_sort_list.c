@@ -3,29 +3,28 @@
 
 /**
  * swap_nodes - Swap two nodes.
- * @node: node to swap.
- * @list: pointer to head of the list
+ * @list: list of integer
+ * @node1: node to swap.
+ * @node2: secand node to swap.
  *
- * Return: node
+ * Return: void
  */
-listint_t *swap_nodes(listint_t *node, listint_t **list)
+void swap_nodes(listint_t **list, listint_t *node1, listint_t *node2)
 {
-	listint_t *left = node->prev, *curr = node;
+	if (node1->prev)
+		node1->prev->next = node2;
+	if (node2->next)
+		node2->next->prev = node1;
 
+	node1->next = node2->next;
+	node2->prev = node1->prev;
 
-	left->next = curr->next;
-	if (curr->next)
-		curr->next->prev = left;
-	curr->next = left;
-	curr->prev = left->prev;
-	left->prev = curr;
-	if (curr->prev)
-		curr->prev->next = curr;
-	else
-		*list = curr;
-	return (curr);
+	node1->prev = node2;
+	node2->next = node1;
+
+	if (!node2->prev)
+		*list = node2;
 }
-
 
 /**
  * cocktail_sort_list - sorts a doubly linked list of integers.
@@ -36,42 +35,43 @@ listint_t *swap_nodes(listint_t *node, listint_t **list)
 void cocktail_sort_list(listint_t **list)
 {
 	int swapped;
-	listint_t *curr;
+	listint_t *current;
 
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
+	if (list == NULL || *list == NULL)
 		return;
 
-	curr = *list;
-	while (swapped == 1)
-	{
+	do {
 		swapped = 0;
-		while (curr->next != NULL)
+		current = *list;
+
+		while (current->next != NULL)
 		{
-			if (curr->n > curr->next->n)
+			if (current->n > current->next->n)
 			{
-				curr = swap_nodes(curr->next, list);
-				swapped = 1;
-				print_list(*list);
-			}
-			curr = curr->next;
-		}
-
-		if (swapped == 0)
-			break;
-
-		swapped = 0;
-
-		while (curr->prev != NULL)
-		{
-			if (curr->n < curr->prev->n)
-			{
-				curr = swap_nodes(curr, list);
+				swap_nodes(list, current, current->next);
 				swapped = 1;
 				print_list(*list);
 			}
 			else
-				curr = curr->prev;
+				current = current->next;
 		}
 
-	}
+		if (!swapped)
+			break;
+
+		swapped = 0;
+		current = current->prev;
+
+		while (current->prev != NULL)
+		{
+			if (current->n < current->prev->n)
+			{
+				swap_nodes(list, current->prev, current);
+				swapped = 1;
+				print_list(*list);
+			}
+			else
+				current = current->prev;
+		}
+	} while (swapped);
 }

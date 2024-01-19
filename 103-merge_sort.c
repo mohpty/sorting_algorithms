@@ -6,43 +6,55 @@
  * @l_size: left size
  * @r_size: right size
  */
-void merge(int *array, size_t l_size, size_t r_size)
+void merge(int *array, int *temp, size_t left, size_t mid, size_t right)
 {
-	size_t i, total_size = l_size + r_size;
-	size_t left_index = 0, right_index = 0, merged_index = 0;
-	int *merged = malloc(total_size * sizeof(int));
+	size_t i = left, j = mid + 1, k = left;
 
-	if (merged == NULL)
-	{
-		exit(EXIT_FAILURE);
-	}
+	print_array(array + left, mid - left + 1);
 
-	while (left_index < l_size && right_index < r_size)
+	print_array(array + mid + 1, right - mid);
+
+	while (i <= mid && j <= right)
 	{
-		if (array[left_index] <= array[l_size + right_index])
-			merged[merged_index++] = array[left_index++];
+		if (array[i] <= array[j])
+			temp[k++] = array[i++];
 		else
-			merged[merged_index++] = array[l_size + right_index++];
+			temp[k++] = array[j++];
 	}
 
+	while (i <= mid)
+		temp[k++] = array[i++];
 
-	while (left_index < l_size)
+	while (j <= right)
+		temp[k++] = array[j++];
+
+	for (i = left; i <= right; i++)
+		array[i] = temp[i];
+
+
+	print_array(array + left, right - left + 1);
+}
+
+
+/**
+ * merge_sort_recursive - Recursive function for the top-down merge sort
+ * @array: Array to be sorted
+ * @temp: Temporary array for merging
+ * @left: Start index of the sub-array
+ * @right: End index of the sub-array
+ */
+void merge_sort_recursive(int *array, int *temp, size_t left, size_t right)
+{
+	size_t mid;
+
+	if (left < right)
 	{
-		merged[merged_index++] = array[left_index++];
+		mid = left + (right - left) / 2;
+
+		merge_sort_recursive(array, temp, left, mid);
+		merge_sort_recursive(array, temp, mid + 1, right);
+		merge(array, temp, left, mid, right);
 	}
-
-
-	while (right_index < r_size)
-	{
-		merged[merged_index++] = array[l_size + right_index++];
-	}
-
-
-	for (i = 0; i < total_size; i++)
-	{
-		array[i] = merged[i];
-	}
-	free(merged);
 }
 
 /**
@@ -52,16 +64,18 @@ void merge(int *array, size_t l_size, size_t r_size)
  */
 void merge_sort(int *array, size_t size)
 {
-	size_t left_size, right_size;
+	int *temp;
 
-	if (size <= 1)
+	temp = malloc(size * sizeof(int));
+	if (!array || size < 2)
 		return;
 
-	left_size = size / 2;
-	right_size = size - left_size;
 
-	merge_sort(array, left_size);
-	merge_sort(array + left_size, right_size);
+	if (!temp)
+	{
+		return;
+	}
 
-	merge(array, left_size, right_size);
+	merge_sort_recursive(array, temp, 0, size - 1);
+	free(temp);
 }

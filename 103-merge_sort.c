@@ -3,8 +3,9 @@
 /**
  * merge - merge arrays
  * @array: array will merged
- * @l_size: left size
- * @r_size: right size
+ * @left: left size
+ * @right: right size
+ * @temp: new node
  */
 void merge(int *array, int *temp, size_t left, size_t right)
 {
@@ -57,6 +58,7 @@ void merge_sort_recursive(int *array, int *temp, size_t left, size_t right)
  */
 void merge_sort(int *array, size_t size)
 {
+	size_t i;
 	int *temp;
 
 	if (!array || size < 2)
@@ -68,7 +70,10 @@ void merge_sort(int *array, size_t size)
 	{
 		return;
 	}
-
+	for (i = 0; i < size; i++)
+	{
+		temp[i] = array[i];
+	}
 	merge_sort_recursive(array, temp, 0, size);
 	free(temp);
 }

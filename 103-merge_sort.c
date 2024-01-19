@@ -7,9 +7,9 @@
  * @right: right size
  * @temp: new node
  */
-void merge(int *array, int *temp, size_t left, size_t right)
+void merge(int *array, size_t left, size_t right, int *temp)
 {
-	size_t i = left, j, mid, k;
+	size_t i = left, j, k, mid;
 
 	j = mid = (left + right) / 2;
 	printf("Merging...\n[left]: ");
@@ -17,7 +17,7 @@ void merge(int *array, int *temp, size_t left, size_t right)
 	printf("[right]: ");
 	print_array(array + mid, right - mid);
 
-	for(k = left; k < right; k++)
+	for (k = left; k < right; k++)
 	{
 		if (i < mid && (j >= right || array[i] <= array[j]))
 			temp[k] = array[i++];
@@ -33,20 +33,21 @@ void merge(int *array, int *temp, size_t left, size_t right)
 /**
  * merge_sort_recursive - Recursive function for the top-down merge sort
  * @array: Array to be sorted
- * @temp: Temporary array for merging
  * @left: Start index of the sub-array
  * @right: End index of the sub-array
+ * @temp: Temporary array for merging
  */
-void merge_sort_recursive(int *array, int *temp, size_t left, size_t right)
+void merge_sort_recursive(int *array, size_t left, size_t right, int *temp)
 {
 	size_t mid;
 
+	mid = (left + right) / 2;
 	if (right - left > 1)
 	{
-		mid = (left + right) / 2;
-		merge_sort_recursive(array, temp, left, mid);
-		merge_sort_recursive(array, temp, mid, right);
-		merge(array, temp, left, right);
+
+		merge_sort_recursive(temp, left, mid, array);
+		merge_sort_recursive(temp, mid, right, array);
+		merge(array, left, right, temp);
 	}
 }
 
@@ -70,9 +71,9 @@ void merge_sort(int *array, size_t size)
 		return;
 	}
 	for (i = 0; i < size; i++)
-	{
-		temp[i] = array[i];
-	}
-	merge_sort_recursive(array, temp, 0, size);
+        {
+                temp[i] = array[i];
+        }
+	merge_sort_recursive(temp, 0, size - 1, array);
 	free(temp);
 }

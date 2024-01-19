@@ -1,28 +1,6 @@
 #include "sort.h"
 
 /**
- * find_max - find the max int in array.
- * @array: the array.
- * @size: the size of the array.
- *
- * Return: imteger
- */
-int find_max(const int *array, size_t size)
-{
-	size_t i;
-	int max = array[0];
-
-	for (i = 1; i < size; i++)
-	{
-		if (array[i] > max)
-		{
-			max = array[i];
-		}
-	}
-	return (max);
-}
-
-/**
  * counting_sort - sorts an array of integers in ascending
  *order using the Counting sort.
  * @array: thhe array to be sorted.
@@ -31,35 +9,40 @@ int find_max(const int *array, size_t size)
 void counting_sort(int *array, size_t size)
 {
 	int max, i;
-	int *counting_array;
-	size_t index = 0;
+	int *counting_array, *temp;
 
-	if (array == NULL || size <= 1)
+	if (array == NULL || size < 2)
 		return;
 
-	max = find_max(array, size);
+	max = array[0];
+	for (i = 1; i < (int)size; i++)
+	{
+		if (array[i] > max)
+		max = array[i];
+	}
 
-	counting_array = malloc((max + 1) * sizeof(int));
+	counting_array = calloc(max + 1, sizeof(int));
+	temp = calloc(size + 1, sizeof(int));
 	if (counting_array == NULL)
 		return;
-	for (i = 0; i <= max; i++)
-	{
-		counting_array[i] = 0;
-	}
-	for (i = 0; (size_t)i < size; i++)
+	for (i = 0; i < (int)size; i++)
 	{
 		counting_array[array[i]]++;
 	}
+	for (i = 1; i <= max; i++)
+	{
+		counting_array[i] += counting_array[i - 1];
+	}
+
 	print_array(counting_array, max + 1);
 
-	for (i = 0; i <= max; i++)
+	for (i = 0; i < (int)size; i++)
 	{
-		while (counting_array[i] > 0)
-		{
-			array[index] = i;
-			index++;
-			counting_array[i]--;
-		}
+		temp[counting_array[array[i]] - 1] = array[i];
+		counting_array[array[i]]--;
 	}
+	for (i = 0; i < (int)size; i++)
+		array[i] = temp[i];
+	free(temp);
 	free(counting_array);
 }

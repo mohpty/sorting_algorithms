@@ -12,12 +12,12 @@ void shell_sort(int *array, size_t size)
 	size_t gap, i, j;
 	int tmp;
 
-	if (!array || size == 0)
+	if (!array || !size)
 		return;
-	for (gap = 1; gap < size / 3; gap = gap * 3 + 1)
+	for (gap = 1; gap <= size / 3; gap = gap * 3 + 1)
 		;
 
-	for (; gap > 0; gap /= 3)
+	while (gap > 0)
 	{
 		for (i = gap; i < size; i++)
 		{
@@ -29,5 +29,7 @@ void shell_sort(int *array, size_t size)
 			array[j] = tmp;
 		}
 		print_array(array, size);
+
+		gap = (gap - 1) / 3;
 	}
 }

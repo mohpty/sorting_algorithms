@@ -3,9 +3,10 @@
 /**
  * merge - merge arrays
  * @array: array will merged
- * @left: left size
- * @right: right size
- * @temp: new node
+ * @temp: temporary node
+ * @left: left idx
+ * @mid: mid idx
+ * @right: right idx
  */
 void merge(int *array, int *temp, size_t left, size_t mid, size_t right)
 {

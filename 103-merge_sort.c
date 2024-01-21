@@ -7,47 +7,67 @@
  * @right: right size
  * @temp: new node
  */
-void merge(int *array, size_t left, size_t right, int *temp)
+void merge(int *array, int *temp, size_t left, size_t mid, size_t right)
 {
-	size_t i = left, j, k, mid;
+	size_t i, j, k;
 
-	j = mid = (left + right) / 2;
 	printf("Merging...\n[left]: ");
 	print_array(array + left, mid - left);
 	printf("[right]: ");
 	print_array(array + mid, right - mid);
 
-	for (k = left; k < right; k++)
+	for (i = left, j = mid, k = left; i < mid && j < right; k++)
 	{
-		if (i < mid && (j >= right || array[i] <= array[j]))
-			temp[k] = array[i++];
+		if (array[i] <= array[j])
+		{
+			temp[k] = array[i];
+			i++;
+		}
 		else
-			temp[k] = array[j++];
+		{
+			temp[k] = array[j];
+			j++;
+		}
+	}
+
+	while (i < mid)
+	{
+	temp[k++] = array[i++];
+	}
+
+	while (j < right)
+	{
+	temp[k++] = array[j++];
+	}
+
+	for (i = left; i < right; i++)
+	{
+	array[i] = temp[i];
 	}
 
 	printf("[Done]: ");
 	print_array(array + left, right - left);
 }
 
-
 /**
  * merge_sort_recursive - Recursive function for the top-down merge sort
  * @array: Array to be sorted
+ * @temp: Temporary array for merging
  * @left: Start index of the sub-array
  * @right: End index of the sub-array
- * @temp: Temporary array for merging
  */
-void merge_sort_recursive(int *array, size_t left, size_t right, int *temp)
+void merge_sort_recursive(int *array, int *temp, size_t left, size_t right)
 {
 	size_t mid;
 
-	mid = (left + right) / 2;
 	if (right - left > 1)
 	{
+		mid = (left + right) / 2;
 
-		merge_sort_recursive(temp, left, mid, array);
-		merge_sort_recursive(temp, mid, right, array);
-		merge(array, left, right, temp);
+		merge_sort_recursive(array, temp, left, mid);
+		merge_sort_recursive(array, temp, mid, right);
+
+		merge(array, temp, left, mid, right);
 	}
 }
 
@@ -58,22 +78,16 @@ void merge_sort_recursive(int *array, size_t left, size_t right, int *temp)
  */
 void merge_sort(int *array, size_t size)
 {
-	size_t i;
 	int *temp;
 
 	if (!array || size < 2)
 		return;
 
 	temp = malloc(size * sizeof(int));
-
 	if (!temp)
-	{
 		return;
-	}
-	for (i = 0; i < size; i++)
-        {
-                temp[i] = array[i];
-        }
-	merge_sort_recursive(temp, 0, size - 1, array);
+
+	merge_sort_recursive(array, temp, 0, size);
+
 	free(temp);
 }

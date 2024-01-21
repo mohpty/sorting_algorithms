@@ -2,15 +2,15 @@
 #include <stdint.h>
 
 /**
- * countSort - perform counting sort.
+ * countingsort - perform counting sort.
  * @array: array to be sorted
  * @size: size of array
  * @exp: Current significant
  */
 void countingsort(int *array, int size, int exp)
 {
-    int *output = malloc(size * sizeof(int));
-    int i, count[10] = {0};
+	int *output = malloc(size * sizeof(int));
+	int i, count[10] = {0};
 
 
 	for (i = 0; i < size; i++)
@@ -47,8 +47,8 @@ void radix_sort(int *array, size_t size)
 		return;
 
 	for (i = 1; (size_t)i < size; i++)
-                if (array[i] > max)
-                        max = array[i];
+		if (array[i] > max)
+			max = array[i];
 
 	for (exp = 1; max / exp > 0; exp *= 10)
 	{

@@ -11,6 +11,9 @@ void bitonic_sort_recursive(int *array, size_t count, int dir);
  */
 void bitonic_sort(int *array, size_t size)
 {
+	if (!array || size < 2)
+		return;
+
 	bitonic_sort_recursive(array, size, 1);
 }
 

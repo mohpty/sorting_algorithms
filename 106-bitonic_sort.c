@@ -5,7 +5,7 @@ void bitonic_merge(int *array, size_t low, size_t count, int dir);
 void bitonic_sort_recursive(int *array, size_t low, size_t count, int dir);
 
 /**
- * bitonic_sort - Sorts an array of integers in ascending order using Bitonic sort
+ * bitonic_sort - Sorts array of integers using Bitonic sort
  * @array: The array to be sorted
  * @size: The size of the array
  */

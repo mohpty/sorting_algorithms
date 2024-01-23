@@ -14,7 +14,7 @@ void bitonic_sort(int *array, size_t size)
 	if (!array || size < 2)
 		return;
 
-	bitonic_sort_recursive(array, size, 1);
+	bitonic_sort_recursive(array, size, 0);
 }
 
 /**

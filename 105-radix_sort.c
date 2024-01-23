@@ -1,6 +1,18 @@
 #include "sort.h"
 #include <stdint.h>
 
+int getmax(int *array, int size)
+{
+	int i, max;
+
+	max = array[0];
+        for (i = 1; i < size; i++)
+	{
+                if (array[i] > max)
+                        max = array[i];
+	}
+	return (max);
+}
 /**
  * countingsort - perform counting sort.
  * @array: array to be sorted
@@ -39,16 +51,16 @@ void countingsort(int *array, int size, int exp)
  */
 void radix_sort(int *array, size_t size)
 {
-	int *output, i, max, exp;
+	int *output, max, exp;
 
-	max = array[0];
+	/*max = array[0];*/
 	if (!array || size < 2)
 		return;
 
-	for (i = 1; (size_t)i < size; i++)
+	/*for (i = 1; (size_t)i < size; i++)
 		if (array[i] > max)
-			max = array[i];
-
+			max = array[i];*/
+	max = getmax(array, size);
 	output = malloc(size * sizeof(int));
 	if (output == NULL)
 		return;

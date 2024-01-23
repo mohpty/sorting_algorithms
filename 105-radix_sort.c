@@ -9,7 +9,7 @@
  */
 void countingsort(int *array, int size, int exp)
 {
-	int *output = malloc(size * sizeof(int));
+	int *o = malloc(size * sizeof(int));
 	int i, count[10] = {0};
 
 
@@ -21,16 +21,15 @@ void countingsort(int *array, int size, int exp)
 
 	for (i = size - 1; i >= 0; i--)
 	{
-		output[count[(array[i] / exp) % 10] - 1] = array[i];
+		o[count[(array[i] / exp) % 10] - 1] = array[i];
 		count[(array[i] / exp) % 10]--;
 	}
 
 	for (i = 0; i < size; i++)
 	{
-		array[i] = output[i];
+		array[i] = o[i];
 	}
-
-	free(output);
+	free(o);
 }
 
 /**
@@ -40,7 +39,7 @@ void countingsort(int *array, int size, int exp)
  */
 void radix_sort(int *array, size_t size)
 {
-	int i, max, exp;
+	int *output, i, max, exp;
 
 	max = array[0];
 	if (!array || size < 2)
@@ -50,14 +49,14 @@ void radix_sort(int *array, size_t size)
 		if (array[i] > max)
 			max = array[i];
 
+	output = malloc(size * sizeof(int));
+	if (output == NULL)
+		return;
+
 	for (exp = 1; max / exp > 0; exp *= 10)
 	{
 		countingsort(array, size, exp);
-
-		for (i = 0; (size_t)i < size; i++)
-		{
-			printf("%d ", array[i]);
-		}
-		printf("\n");
+		print_array(array, size);
 	}
+	free(output);
 }

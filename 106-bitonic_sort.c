@@ -34,17 +34,10 @@ void bitonic_swap(int *array, size_t size, bool dir)
  */
 void bitonic_merge(int *array, size_t count, size_t co, bool dir)
 {
-	/*int *t, *o;*/
 	size_t k;
 
 	if (count > 1)
 	{
-		/*o = array;
-		t = array + (count / 2);
-		bitonic_swap(array, count, dir);
-		bitonic_merge(o, count / 2, co, dir);
-		bitonic_merge(t, count / 2, co, dir);*/
-
 		k = count / 2;
 		bitonic_swap(array, count, dir);
 		bitonic_merge(array, k, co, dir);
@@ -61,13 +54,10 @@ void bitonic_merge(int *array, size_t count, size_t co, bool dir)
  */
 void bitonic_sort_recursive(int *array, size_t count, size_t co, bool dir)
 {
-	/*int *o, *t;*/
 	size_t k;
 
 	if (count > 1)
 	{
-		/*o = array;
-		t = array + (count / 2);*/
 		k = count / 2;
 		printf("Merging [%lu/%lu] (%s):\n", count, co, dir ? "UP" : "DOWN");
 		print_array(array, count);
@@ -75,9 +65,6 @@ void bitonic_sort_recursive(int *array, size_t count, size_t co, bool dir)
 		bitonic_sort_recursive(array, k, co, true);
 		bitonic_sort_recursive(array + k, k, co, false);
 		bitonic_merge(array, count, co, dir);
-		/*bitonic_sort_recursive(o, count / 2, co, true);
-		bitonic_sort_recursive(t, count / 2, co, false);
-		bitonic_merge(o, count, co, dir);*/
 
 		printf("Result [%lu/%lu] (%s):\n", count, co, dir ? "UP" : "DOWN");
 		print_array(array, count);
